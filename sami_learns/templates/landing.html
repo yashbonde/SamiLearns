@@ -1,0 +1,57 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <!-- Link the main stylesheet -->
+    <link href="{{ url_for('static', path='/style.css') }}" rel="stylesheet">
+
+    <!-- Link fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,400i,500,500i,700,700i,900,900i&display=swap"
+        rel="stylesheet">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/md5.js"></script>
+
+    <title>SamiLearns</title>
+</head>
+
+<body>
+
+    <div class="landingbox">
+        <h1> Welcome to <font color="#34CD36">SamiLearns</font></h1>
+        <p>SamiLearns is a new learning system whose aim is to fundamentally reduce the distance between existance of information
+        and your brain where it will be used. Read more <a href="https://coda.io/@yash-bonde/learning-system">here</a>.</p>
+
+        <form>
+            {% if cannot_login %}
+                <input type="text" id="uname" name="user" value="Invalid", style = "color: #FF2943; border-color: #FF2943"><br>
+                <input type="password" id="pwd" name="password" value="*****" style="margin-bottom: 1rem; color: #FF2943; border-color: #FF2943"><br>
+            {% else %}
+                <input type="text" id="uname" name="user" value="Username"><br>
+                <input type="password" id="pwd" name="password" value="********" style="margin-bottom: 1rem;"><br>
+            {% endif %}
+            <button type="submit" formaction="/login">Sign In</button>
+        </form>
+    </div>
+
+<!-- <script>
+function login(){
+    var username = document.getElementById("uname")
+    const hash = CryptoJS.MD5(document.getElementById("pwd").value).toString();
+    // console.log("HAHHAHSHSH", hash)
+    var new_link = await fetch('/login/', {
+        method: "POST",
+        params: {
+            'username': username.value,
+            'pwd': hash
+        }
+    })
+    window.location.href = new_link
+}
+</script> -->
+
+</body>
+
+</html>

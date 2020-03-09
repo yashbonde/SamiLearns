@@ -1,0 +1,107 @@
+/* main style sheet for the SamiLearns PoC*/
+/* cross document */
+:root {
+    font-family: 'Roboto', sans-serif;
+    color: #202020;
+}
+
+h1 {
+    font-size: 3rem;
+    font-weight: 900;
+    margin-bottom: 0;
+}
+
+h2 {
+    font-size: 2rem;
+    font-weight: 900;
+    margin-bottom: 0;
+}
+
+a {
+    color: #21CFE8;
+    text-decoration: none; /* no underlines*/
+}
+
+/* styles for landing page */
+.landingbox {
+    display: grid;
+    grid-template-columns: 1fr 0.5in 1.0in [start] 5.5in [end] 1.0in 0.5in 1fr;
+    margin-top: 20%;
+    text-align: center;
+    font-family: 'Roboto', sans-serif;
+}
+
+.landingbox * {
+    grid-column: start / end;
+}
+
+.landingbox h1 {
+    margin-bottom: 0;
+}
+
+.landingbox input {
+  border: none;
+  border-bottom: 2px solid;
+  border-color: #545454;
+  margin-top: 1rem;
+  font-size: 1rem;
+  font-family: 'Roboto', sans-serif;
+  color: #545454;
+  text-align: center;
+}
+
+.landingbox button {
+    background: none;
+    color: #21CFE8;
+    border: none;
+    font-size: 1rem;
+    font-family: "Roboto", sans-serif;
+    font-weight: 500;
+}
+
+/* home page */
+.homepage {
+    display: grid;
+    grid-template-columns: 1fr 0.5in [start] 1.25in 5in 1.25in [end] 0.5in 1fr;
+}
+
+.homepage * {
+    grid-column: start / end;
+}
+
+.homepage h1 {
+    font-size: 3rem;
+    font-weight: 900;
+    text-align: center;
+    margin-bottom: 0;
+}
+
+.homepage h2 {
+    font-size: 2rem;
+    font-weight: 900;
+    text-align: center;
+    margin-bottom: 0;
+}
+
+/* stylesfor article pages */
+article {
+    display: grid;
+    /* instead of using the complex minmax even when we have the @media query seems weird,
+       so we can fix this very easiy
+    */
+    grid-template-columns: 1fr 0.5in [start] 1.25in 5in 1.25in [end] 0.5in 1fr;
+    /* NOTE: we are keeping the size of out box as 8.5 inches */
+}
+
+article * {
+    grid-column: start / end;
+}
+
+@media (max-width: 8.5in) {
+    /* what ever we need to if the width is less than 9.0in */
+    article { grid-template-columns: 1fr 5% [start] 15% 60% 15% [end] 5% 1fr; };
+    .landingbox {grid-template-columns: 1fr 5% [start] 15% 60% 15% [end] 5% 1fr; };
+    .homepage {grid-template-columns: 1fr 5% [start] 15% 60% 15% [end] 5% 1fr; }
+    :root {font-size: 14px};
+}
+
