@@ -12,22 +12,38 @@
     
         <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/core.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/md5.js"></script>
+        <script src="{{ url_for('static', path = '/tuning.js') }}"></script>
     
         <title>{{ book_title }}</title>
     </head>
 
     <body>
         <article>
-            <button>Go Back ➜</button>
+            <a href=https://coda.io/@yash-bonde/learning-system target="_blank"><img src="{{ url_for('static', path='/SamiLearnsLogo.png') }}" style="display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 25%;
+    margin-top: 2rem;"></a>
+            <button><a href="{{ user_home_url }}">Go Back ➜</a></button>
             <h1>{{ book_title }}</h1>
-            <p>{{ intro_text }}</p>
+            {% if intro_text is not none %}
+                <p>{{ intro_text }}</p>
+            {% endif %}
 
             {% for section in document_sections %}
-            <h2>{{ section.name }}</h2>
+            <span style="display: inline;">
+                <h2>{{ section.name }}</h2>
+                <button style="margin-top: 0.0rem; text-align: left; padding: 0%;" onclick="more_like_this('{{ book_id }}' , '{{ section.id }}')">👍</button>
+                <button style="margin-top: 0.0rem; text-align: left; padding: 0%;" onclick="less_like_this('{{ book_id }}' , '{{ section.id }}')">🤙</button>
+            </span>
                 {% for record in section.records %}
-                <p>{{ record.htmltext }} <a href="{{ record.link.url }}">{{ record.link.name }}</a></p>
+                <p>{{ record.htmltext }} <a href="{{ record.master_link.url }}" target="_blank">{{ record.master_link.link_name }}</a></p>
                 {% endfor %}
             {% endfor %}
+            <p><br><br><br></p>
         </article>
+        <footer>
+            <p>Made with ♥ in India for humanity!</p>
+        </footer>
     </body>
 </html>

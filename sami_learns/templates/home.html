@@ -10,6 +10,8 @@
     <!-- Link fonts -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,400i,500,500i,700,700i,900,900i&display=swap"
         rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Spartan:600&display=swap" rel="stylesheet">
+
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/core.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/md5.js"></script>
@@ -23,12 +25,9 @@
         <p>SamiLearns is a new learning system whose aim is to fundamentally reduce the distance between existance of information
         and your brain where it will be used. Read more <a href="https://coda.io/@yash-bonde/learning-system" target="_blank">here</a>.</p>
 
-        <p>There are two steps to getting the information closer to your brain. First gather the links you
-            think are important and paste them here. Second, customise the notebook so its the most
-            perfect representation of your learning.
-        </p>
-
         <h2>Gather New Knowledge</h2>
+        <p>There are two steps to getting the information closer to your brain. First gather the links you think are
+            important and paste them here and add title to your book. Second start reading your personlised notebook</p>
         <div class="queryarea">
             <textarea type="text" placeholder="What do want to call it" id="bookNameTextArea"
                 style="height: 2rem; padding: 8px 15px;"></textarea>
@@ -38,9 +37,10 @@
         </div>
 
         <h2>Some of your knowledge</h2>
+        <p>List of what you have understood, information will clubbed in the future to create a understanding map.</p>
         <div style="margin: 1rem;">
         {% for doc in documents %}
-            <li><a href="{{doc.url}}" target="_blank">{{doc.name}}</a></li>
+            <li><a href="{{doc.url}}">{{doc.name}}</a></li>
         {% endfor %}
         </div>
 

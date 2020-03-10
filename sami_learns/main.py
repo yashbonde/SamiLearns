@@ -50,9 +50,13 @@ def home_platform(request: Request, username: str):
     homepage"""
 
     documents = [
-        {"name": "How India is using technology to lift millions out of poverty", "url": "wwww.has.com"},
-        {"name": "On the theory of evolution and its cultural impacts", "url": "wwww.hashish.com"},
-        {"name": "Game theory and search for universal palindrome", "url": "wwww.hashish.com"}
+        {
+            "name": "How India is using technology to lift millions out of poverty",
+            "url": "{username}/books/12".format(username = username)
+        }, {
+            "name": "On the theory of evolution and its cultural impacts",
+            "url": "{username}/books/22".format(username = username)
+        }
     ]
 
     return templates.TemplateResponse("home.html", {
@@ -67,21 +71,15 @@ def home_platform(request: Request, username: str):
 def make_new_book(request: Request):
     pass
 
-
-fake_books_names = {
-    "12": "How India is using technology to lift millions out of poverty",
-    "22": "On the theory of evolution and its cultural impacts",
-    "45": "Game theory and search for universal palindrome"
-}
-
-
 fake_books = {
-    "12": json.
+    "12": json.load(open("sample_article_jsons/12.json")),
+    "22": json.load(open("sample_article_jsons/22.json")),
 }
 
 @app.get("/{username}/books/{book_id}")
 def get_book(request: Request, username: str, book_id: int):
     return templates.TemplateResponse("book.html", {
         "request": request,
-        "book_title": fake_books[str(book_id)]
+        "user_home_url": "/{username}".format(username = username),
+        **fake_books[str(book_id)]
     })
