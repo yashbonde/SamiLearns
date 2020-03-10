@@ -18,40 +18,56 @@
 </head>
 
 <body>
-
-    <div class="homepage">
+    <div class="platform">
         <h1> Welcome to <font color="#34CD36">SamiLearns</font>, {{ user_first_name }}</h1>
-        <p style="text-align: center;">SamiLearns is a new learning system whose aim is to fundamentally reduce the distance between existance of
-            information
-            and your brain where it will be used. Read more <a
-                href="https://coda.io/@yash-bonde/learning-system">here</a>.</p>
+        <p>SamiLearns is a new learning system whose aim is to fundamentally reduce the distance between existance of information
+        and your brain where it will be used. Read more <a href="https://coda.io/@yash-bonde/learning-system" target="_blank">here</a>.</p>
+
+        <p>There are two steps to getting the information closer to your brain. First gather the links you
+            think are important and paste them here. Second, customise the notebook so its the most
+            perfect representation of your learning.
+        </p>
 
         <h2>Gather New Knowledge</h2>
-        <p></p>
-
-        <h2>Some of your knowledge</h2>
-
-        {% if count %}
-        <p></p>
-
+        <div class="queryarea">
+            <textarea type="text" placeholder="What do want to call it" id="bookNameTextArea"
+                style="height: 2rem; padding: 8px 15px;"></textarea>
+        <textarea type="text" placeholder="Add links here..." id="queryTextArea"
+            style="margin-top: 0rem;"></textarea>
+        <button onclick="gatherKnowledge()">Start Generating</button>
         </div>
 
-    <!-- <script>
-function login(){
-    var username = document.getElementById("uname")
-    const hash = CryptoJS.MD5(document.getElementById("pwd").value).toString();
-    // console.log("HAHHAHSHSH", hash)
-    var new_link = await fetch('/login/', {
-        method: "POST",
-        params: {
-            'username': username.value,
-            'pwd': hash
-        }
-    })
-    window.location.href = new_link
-}
-</script> -->
+        <h2>Some of your knowledge</h2>
+        <div style="margin: 1rem;">
+        {% for doc in documents %}
+            <li><a href="{{doc.url}}" target="_blank">{{doc.name}}</a></li>
+        {% endfor %}
+        </div>
+
+    </div>
 
 </body>
+
+<script>
+// https://stackoverflow.com/questions/1418050/string-strip-for-javascript
+if (typeof (String.prototype.trim) === "undefined") {
+        String.prototype.trim = function () {
+            return String(this).replace(/^\s+|\s+$/g, '');
+        };
+    }
+
+function gatherKnowledge(){
+    var links = document.getElementById("queryTextArea");
+    var links_flat = links.value.split("\n");
+    links_flat = links_flat.filter(function(el){
+        if(el.trim() != ""){
+            return true;
+        }
+    })
+    var book_name = document.getElementById("bookNameTextArea").value;
+    console.log("Book Name:", book_name, "Final links list:", links_flat);
+}
+
+</script>
 
 </html>

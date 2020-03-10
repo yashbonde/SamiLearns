@@ -1,10 +1,12 @@
 """main.py - file where the server resides
 08.03.2020 - @yashbonde"""
 
+import json
 from fastapi import FastAPI, Request # base imports
 from fastapi.staticfiles import StaticFiles # static files on the system
 from fastapi.templating import Jinja2Templates # jinja templates
 from fastapi.responses import RedirectResponse
+from pydantic import BaseModel
 
 # app things
 app = FastAPI()
@@ -18,14 +20,14 @@ fake_db = {
 
 # routes
 @app.get("/")
-async def root(request: Request):
+def root(request: Request, cannot_login: bool = False):
     return templates.TemplateResponse("landing.html", {
         "request": request, 
-        "cannot_login": False
+        "cannot_login": cannot_login
     })
 
-@app.get("/login/")
-async def login(request: Request, user: str, password: str):
+@app.get("/login")
+def login(request: Request, user: str, password: str):
     user_name = user
     pwd_hash = password
 
@@ -42,11 +44,44 @@ async def login(request: Request, user: str, password: str):
             "cannot_login": False
         })
 
-@app.get("/platform/")
-async def home_platform(request: Request, user_id: int):
+@app.get("/{username}")
+def home_platform(request: Request, username: str):
     """take in the user_id and return the rendered template for
     homepage"""
+
+    documents = [
+        {"name": "How India is using technology to lift millions out of poverty", "url": "wwww.has.com"},
+        {"name": "On the theory of evolution and its cultural impacts", "url": "wwww.hashish.com"},
+        {"name": "Game theory and search for universal palindrome", "url": "wwww.hashish.com"}
+    ]
+
     return templates.TemplateResponse("home.html", {
         "request": request,
-        "user_first_name": "Robert"
+        "user_first_name": username,
+        "documents": documents
+    })
+
+# var regex_pat = RegExp('(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)');
+
+@app.get("/newBook")
+def make_new_book(request: Request):
+    pass
+
+
+fake_books_names = {
+    "12": "How India is using technology to lift millions out of poverty",
+    "22": "On the theory of evolution and its cultural impacts",
+    "45": "Game theory and search for universal palindrome"
+}
+
+
+fake_books = {
+    "12": json.
+}
+
+@app.get("/{username}/books/{book_id}")
+def get_book(request: Request, username: str, book_id: int):
+    return templates.TemplateResponse("book.html", {
+        "request": request,
+        "book_title": fake_books[str(book_id)]
     })
