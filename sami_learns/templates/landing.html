@@ -22,36 +22,25 @@
     <div class="landingbox">
         <h1> Welcome to <font color="#34CD36">SamiLearns</font></h1>
         <p>SamiLearns is a new learning system whose aim is to fundamentally reduce the distance between existance of information
-        and your brain where it will be used. Read more <a href="https://coda.io/@yash-bonde/learning-system" target="_blank">here</a>.</p>
+        and your brain where it will be used by atleast an order of magnitude in V1 and two orders by V2.
+        Read more <a href="https://coda.io/@yash-bonde/learning-system" target="_blank">here</a>.</p>
 
         <form>
             {% if cannot_login %}
-                <input type="text" id="uname" name="user" value="Invalid", style = "color: #FF2943; border-color: #FF2943"><br>
-                <input type="password" id="pwd" name="password" value="*****" style="margin-bottom: 1rem; color: #FF2943; border-color: #FF2943"><br>
+                <input type="text" id="uname" name="user" placeholder="Invalid", style = "color: #FF2943; border-color: #FF2943"><br>
+                <input type="password" id="pwd" name="password" style="margin-bottom: 1rem; color: #FF2943; border-color: #FF2943"><br>
             {% else %}
-                <input type="text" id="uname" name="user" value="Username"><br>
-                <input type="password" id="pwd" name="password" value="********" style="margin-bottom: 1rem;"><br>
+                <input type="text" id="uname" name="user" placeholder="Username"><br>
+                <input type="password" id="pwd" name="password" style="margin-bottom: 1rem;"><br>
             {% endif %}
             <button type="submit" formaction="/login">Sign In</button>
+            <!-- <button onclick="login()">Sign In</button> -->
         </form>
     </div>
 
-<!-- <script>
-function login(){
-    var username = document.getElementById("uname")
-    const hash = CryptoJS.MD5(document.getElementById("pwd").value).toString();
-    // console.log("HAHHAHSHSH", hash)
-    var new_link = await fetch('/login/', {
-        method: "POST",
-        params: {
-            'username': username.value,
-            'pwd': hash
-        }
-    })
-    window.location.href = new_link
-}
-</script> -->
-
+    <footer>
+        <p>Made with ♥ in India for humanity!</p>
+    </footer>
 </body>
 
 </html>

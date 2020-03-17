@@ -1,18 +1,22 @@
 {
-    "book_title": null,
-    "intro_text": null,
-    "document_sections": [
-        {
-            "name": null,
-            "records": [
-                {
-                    "htmltext": null,
-                    "master_link": {
-                        "url": null,
-                        "link_name": null
+    "book_template": {
+        "book_id": null,
+        "book_title": null,
+        "intro_text": null,
+        "document_sections": [
+            {
+                "id": null,
+                "name": null,
+                "records": [
+                    {
+                        "htmltext": null,
+                        "master_link": {
+                            "url": null,
+                            "link_name": null
+                        }
                     }
-                }
-            ]
-        }
-    ]
+                ]
+            }
+        ]
+    }
 }

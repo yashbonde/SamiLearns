@@ -12,14 +12,15 @@
     
         <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/core.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/md5.js"></script>
-        <script src="{{ url_for('static', path = '/tuning.js') }}"></script>
+        <!-- <script src="{{ url_for('static', path = '/tuning.js') }}"></script> -->
     
         <title>{{ book_title }}</title>
     </head>
 
     <body>
         <article>
-            <a href=https://coda.io/@yash-bonde/learning-system target="_blank"><img src="{{ url_for('static', path='/SamiLearnsLogo.png') }}" style="display: block;
+            <a href=https://coda.io/@yash-bonde/learning-system target="_blank">
+            <img src="{{ url_for('static', path='/SamiLearnsLogo.png') }}" style="display: block;
     margin-left: auto;
     margin-right: auto;
     width: 25%;
@@ -33,8 +34,8 @@
             {% for section in document_sections %}
             <span style="display: inline;">
                 <h2>{{ section.name }}</h2>
-                <button style="margin-top: 0.0rem; text-align: left; padding: 0%;" onclick="more_like_this('{{ book_id }}' , '{{ section.id }}')">👍</button>
-                <button style="margin-top: 0.0rem; text-align: left; padding: 0%;" onclick="less_like_this('{{ book_id }}' , '{{ section.id }}')">🤙</button>
+                <button style="margin-top: 0.0rem; text-align: left; padding: 0%;" onclick="tune_counts('more' , '{{ book_id }}' , '{{ section.id }}')">👍</button>
+                <button style="margin-top: 0.0rem; text-align: left; padding: 0%;" onclick="tune_counts('less' , '{{ book_id }}' , '{{ section.id }}')">🤙</button>
             </span>
                 {% for record in section.records %}
                 <p>{{ record.htmltext }} <a href="{{ record.master_link.url }}" target="_blank">{{ record.master_link.link_name }}</a></p>
@@ -46,4 +47,24 @@
             <p>Made with ♥ in India for humanity!</p>
         </footer>
     </body>
+
+<script>
+function tune_counts(inc_dec, book_id, section_id) {
+    // user wants more items in this section
+    console.log(book_id, "more_like_thismore_like_thismore_like_thismore_like_thismore_like_thismore_like_this", section_id);
+    var req = new Request('/{{ username }}/books/{{ book_id_url }}', {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        method: "POST",
+        body: JSON.stringify({
+            "more_less": inc_dec,
+            "book_id": book_id,
+            "section_id": section_id
+        })
+    });
+    fetch(req);
+};
+</script>
 </html>

@@ -21,30 +21,37 @@
 
 <body>
     <div class="platform">
-        <h1> Welcome to <font color="#34CD36">SamiLearns</font>, {{ user_first_name }}</h1>
-        <p>SamiLearns is a new learning system whose aim is to fundamentally reduce the distance between existance of information
-        and your brain where it will be used. Read more <a href="https://coda.io/@yash-bonde/learning-system" target="_blank">here</a>.</p>
+        <h1> Welcome to <font color="#34CD36">SamiLearns</font>, {{ username }}</h1>
+        <p>SamiLearns is a new learning system whose aim is to fundamentally reduce the distance between existance of
+            information and your brain where it will be used by atleast an order of magnitude in V1 and two orders by V2.
+            Read more <a href="https://coda.io/@yash-bonde/learning-system" target="_blank">here</a>.</p>
 
-        <h2>Gather New Knowledge</h2>
+        <h2>🚪 Gather New Knowledge</h2>
         <p>There are two steps to getting the information closer to your brain. First gather the links you think are
             important and paste them here and add title to your book. Second start reading your personlised notebook</p>
         <div class="queryarea">
-            <textarea type="text" placeholder="What do want to call it" id="bookNameTextArea"
+            <textarea type="text" placeholder="✏️ What do want to call it" id="bookNameTextArea"
                 style="height: 2rem; padding: 8px 15px;"></textarea>
-        <textarea type="text" placeholder="Add links here..." id="queryTextArea"
+        <textarea type="text" placeholder="🔗 Add links here..." id="queryTextArea"
             style="margin-top: 0rem;"></textarea>
         <button onclick="gatherKnowledge()">Start Generating</button>
         </div>
 
-        <h2>Some of your knowledge</h2>
-        <p>List of what you have understood, information will clubbed in the future to create a understanding map.</p>
-        <div style="margin: 1rem;">
+        <h2>📕 Some of your knowledge</h2>
+        <p>List of what you have understood, information will clubbed in the future to create a understanding
+        map. The more you use this the bigger the map gets and then you know what you miss, moreover SamiLearns
+        then automatically understands what you don't understand and build better notebooks.</p>
+        <div style="margin: 1rem; margin-bottom: 4rem;">
         {% for doc in documents %}
             <li><a href="{{doc.url}}">{{doc.name}}</a></li>
         {% endfor %}
         </div>
 
     </div>
+
+    <footer>
+        <p>Made with ♥ in India for humanity!</p>
+    </footer>
 
 </body>
 
@@ -66,6 +73,26 @@ function gatherKnowledge(){
     })
     var book_name = document.getElementById("bookNameTextArea").value;
     console.log("Book Name:", book_name, "Final links list:", links_flat);
+
+    // now send system the queries to make the data
+    var req = new Request('/{{ username }}/newBook', {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        method: "POST",
+        body: JSON.stringify({
+            queries: links_flat,
+            book_name: book_name
+        })
+    });
+    fetch(req).then(function(response){
+        console.log(response);
+        response.json().then(function(data){
+            console.log(data);
+            window.location.href = data.book_url
+        })
+    })
 }
 
 </script>
