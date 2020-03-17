@@ -64,7 +64,13 @@ function tune_counts(inc_dec, book_id, section_id) {
             "section_id": section_id
         })
     });
-    fetch(req);
+    fetch(req).then(function (response) {
+        console.log(response);
+        response.json().then(function (data) {
+            console.log(data);
+            window.location.href = data.book_url
+        })
+    });
 };
 </script>
 </html>

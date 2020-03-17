@@ -10,7 +10,7 @@ from fastapi.responses import RedirectResponse
 from pydantic import BaseModel
 
 # custom dependencies
-from sami_learns.learning_system import book_handler
+from learning_system import book_handler
 
 # app things
 app = FastAPI()
@@ -80,7 +80,7 @@ class queriesModel(BaseModel):
 
 @app.post("/{username}/newBook")
 def make_new_book(request: Request, username:str,  queries: queriesModel):
-    new_book_id = book_handler.make_new_book(book_id, section_id, tune_more_less)
+    # new_book_id = book_handler.make_new_book(queries.book_name, queries.queries)
     new_book_id = 12
 
     return {
@@ -112,6 +112,12 @@ class BookConfigurationsModel(BaseModel):
 
 @app.post("/{username}/books/{book_id}")
 def tune_book(request: Request, username: str, book_id: int, book_config: BookConfigurationsModel):
-    print("---> {} --> {} --> {}".format(
-        book_config.more_less, book_config.book_id, book_config.section_id))
-    pass
+
+    book_handler.update_book_by_parameters(book_config)
+
+    return {
+        "book_url": "/{username}/books/{book_id}".format(
+            username = username,
+            book_id = book_id
+        )
+    }
