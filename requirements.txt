@@ -1,7 +1,4 @@
-uvicorn==0.11.3
-fastapi==0.52.0
-numpy==1.18.1
-Jinja2==2.11.1Click==7.0
+Click==7.0
 fastapi==0.52.0
 h11==0.9.0
 httptools==0.1.1
