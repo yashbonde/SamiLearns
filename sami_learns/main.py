@@ -3,6 +3,8 @@
 
 # base dependencies
 import json
+import logging
+logging.basicConfig(level=logging.INFO)
 from fastapi import FastAPI, Request # base imports
 from fastapi.staticfiles import StaticFiles # static files on the system
 from fastapi.templating import Jinja2Templates # jinja templates
@@ -73,12 +75,13 @@ def home_platform(request: Request, username: str):
         "documents": documents
     })
 
-# var regex_pat = RegExp('(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)');
 
 @app.post("/{username}/newBook")
 def make_new_book(request: Request, username:str,  queries: fastapi_query_models.queriesModel):
     # new_book_id = book_handler.make_new_book(queries.book_name, queries.queries)
     new_book_id = 12
+
+    book_handler.make_new_book(queries)
 
     return {
         "book_url": "/{username}/books/{book_id}".format(

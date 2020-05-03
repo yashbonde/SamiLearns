@@ -128,3 +128,6 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# jupyter notebooks
+/sami_learns/notebooks/

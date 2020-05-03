@@ -11,10 +11,11 @@ To use this service you need to have `python3` installed, hopefully you are usin
 python3 -m venv venv # one time only
 source venv/bin/activate
 pip3 install -r requirements.txt
-sh runserver.sh
+python3 -m spacy download en_core_web_sm
+./runserver
 ```
 
-Also it is a good habit to run `pip3 install -r requirements.txt` everytime you make a new pull. From every following usage simply run the following commands:
+There will be other things that might need to be installed along the way so do follow those. This setup is more suited to docker style. Also it is a good habit to run `pip3 install -r requirements.txt` everytime you make a new pull. From every following usage simply run the following commands:
 ```shell
 source venv/bin/activate
 sh runserver.sh

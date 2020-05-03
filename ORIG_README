@@ -1,0 +1,122 @@
+SamiLearning System
+===================
+An ever-evolving Notebook (Copy) and Book (Learning Source)?
+  - Book has redundant information, once it is published it is outdated
+  - Book has too much information, people don't need it
+  - Multiple books having excess information carry the same thing
+  - They are not personalised or editable
+  - Books are not in variety of language
+
+SamiLearns
+==========
+
+You can also think of SamiLearns as a dynamic content platform where the AI can help
+refine the content according to peoples wishes.
+
+
+From Slack
+==========
+- evidence gap map
+
+
+
+Guy Kawasaki - Art of Innovation
+================================
+
+"Don't worry by crappy" --> When you have jumped to the next innovation curve then it
+is fine to be crappy, if you wait for the chips to fall into place then the macintoch would
+have never shipped. It is okay to have crappy product if you are jumping the curve.
+
+When creating new product ask yourself, is your product:
+1. functional (deep)
+2. intelligent
+3. complete
+4. empowering
+5. elegant
+6. Let the 100 flowers blossom --> you don't really know how your product will be used.
+7. Polarize people: people love tivo but advertisers hate `tivo`. People either love or hate `iPhone`,
+   don't intentionally hurt people
+8. churn baby, churn: continuously improve by versioning. When making it ignore the people but when
+   selling it, listen to the people, you need to flip that bit. Keep evolving.
+9. Be unique and valuable
+10. perfect your pitch:
+    - customize your introduction to the audience
+    - 10-20-30 rules for slides. 10 slides in 20 minutes and 30 pts is font size
+11. Don't let the Bozoz get you down
+
+DB schema
+=========
+
+// Piece 1 - Infrastructure
+// Table for users and basic authentication
+Table users as U {
+  id int [pk, increment]
+  created_at timestamp
+  last_login timestamp
+  username varchar
+  pwd varchar
+  auth_token varchar
+  login_counts int // should increment everytime new user comes in
+}
+
+// table dedicated to links
+Table links as L {
+  id int [pk, increment]
+  created_at timestamp
+  count_used int // this should increment everytime someone uses this
+  keywords JSON // this is the list of JSON objects about the inferred meta
+  source_meta JSON // this the meta about this link like when was
+                   // it last updated, etc.
+}
+
+// Table just for the queries asked
+Table queries as Q {
+  id int [pk, increment]
+  created_at timestamp
+  owner int
+  query_links JSON // array of links
+  tuning_params JSON // json object with tuning parameter values
+}
+
+Ref: U.id > Q.owner
+Ref: L.id > Q.query_links
+
+// Table dedicated to books
+Table books as B {
+  id int [pk, increment]
+  created_at timestamp
+  modified_at timestamp
+  owner int
+  title varchar // name of the book
+  query int // which query it belongs to
+  has_changes bool // whether this notebook has been modified
+                   // in our PoC stage this will always be false
+  tuning_params JSON // this is the tuning factors
+}
+
+Ref: B.owner > U.id
+Ref: B.query > Q.id
+Ref: B.tuning_params > Q.tuning_params
+
+// Piece 2 - Brain
+
+// Records table is the store for cached information we have
+// on something, this is used in order to speed up the information
+// all it needs to see is that if link_id in records
+Table records as R {
+  id int [pk, increment]
+  created_at timestamp
+  link_id int
+  book_id int
+  keywords array // search under what keywords
+  tuning_params JSON // under which tuning conditions to use this
+}
+
+Ref: R.link_id > L.id
+Ref: R.book_id > B.id
+
+Table keywords as KW {
+  id int [pk, increment]
+  created_at timestamp
+}
+
