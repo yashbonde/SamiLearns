@@ -78,31 +78,34 @@ def home_platform(request: Request, username: str):
 
 @app.post("/{username}/newBook")
 def make_new_book(request: Request, username:str,  queries: fastapi_query_models.queriesModel):
-    # new_book_id = book_handler.make_new_book(queries.book_name, queries.queries)
-    new_book_id = 12
-
-    book_handler.make_new_book(queries)
-
+    new_book_id = '4c20d3St0n3d'
+    document_sections = book_handler.make_new_book(queries)
+    book = {
+        "book_id": new_book_id,
+        "book_title": queries.book_name,
+        "intro_text": None,
+        "document_sections": document_sections
+    }
+    with open("./sample_article_jsons/4c20d3St0n3d.json", "w") as f:
+        f.write(json.dumps(book))
+    
     return {
         "book_url": "/{username}/books/{book_id}".format(
             username = username,
             book_id = new_book_id
         )
     }
-    
-fake_books = {
-    "12": json.load(open("sample_article_jsons/12.json")),
-    "22": json.load(open("sample_article_jsons/22.json")),
-}
+
 
 @app.get("/{username}/books/{book_id}")
-def get_book(request: Request, username: str, book_id: int):
+def get_book(request: Request, username: str, book_id: str):
+    fake_book = json.load(open("./sample_article_jsons/{}.json".format(book_id)))
     return templates.TemplateResponse("book.html", {
         "request": request,
         "user_home_url": "/{username}".format(username = username),
         "book_id_url": book_id,
         "username": username,
-        **fake_books[str(book_id)]
+        **fake_book
     })
 
 @app.post("/{username}/books/{book_id}")

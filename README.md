@@ -33,6 +33,8 @@ We aim to use the latest tech stack so as to ensure bets quality of information,
 1. `fastapi` for backend server maintainance
 2. `pytorch` instead of `tensorflow`, for it's ease and simplicity of use
 
+For the notable research on this topic please refer to [`research`]("./research") folder, note that this only contains material that was considered as important and our system is based on that.
+
 ## Outcome
 
 I am the outcome to be a system that is atleast 2x better at gathering information than current sources (`pre-alpha`). Overal aim with this idea is to have `10x by V1` and `100x by V2` improvement in learning speed of a human. For this specific outcome I aim for the following:

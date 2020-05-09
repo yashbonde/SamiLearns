@@ -131,3 +131,6 @@ dmypy.json
 
 # jupyter notebooks
 /sami_learns/notebooks/
+*.json
+*.vec
+*.pkl

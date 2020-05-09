@@ -11,11 +11,14 @@ from urllib.parse import urlparse
 import logging
 
 # custom
-from .nlp_feature_extractor import feature_extractor
+from .nlp_feature_extractor import make_scrapped_data, get_aggregate_data
+from .infer_sent_model import encoder
 
 # constants to be initialised
 URLPAT = re.compile(r'^(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$')
-nlp = spacy.load("en_core_web_md")
+logging.info("Loading Spacy NLP model ... this might take some time!")
+NLP = spacy.load("en_core_web_md")
+INFERSENT_MODEL = encoder.get_model()
 
 def make_new_book(queries):
     """do the following:
@@ -41,11 +44,6 @@ def make_new_book(queries):
                 scheme = pr.scheme, netloc = pr.netloc, path = pr.path
             )
             queries_cleaned.append(qc)
-            url_meta.append({
-                "raw": q,
-                "netloc": pr.netloc,
-                "path": pr.path
-            })
         else:
             logging.info("Removing {} as this does not look like a valid url".format(q))
 
@@ -57,17 +55,12 @@ def make_new_book(queries):
         html_for_urls.append(out)
     
     # now perform nlp feature extraction
-    features = []
-    for url, html in zip(url_meta, html_for_urls):
-        sentences = feature_extractor(html, nlp)
-        features.append({
-            "url_meta": url,
-            "sentences": sentences
-        })
+    data_scrapped = make_scrapped_data(queries_cleaned, html_for_urls, NLP)
 
     # now send to NLP AI and perform aggregation
+    output_data = get_aggregate_data(data_scrapped, INFERSENT_MODEL)
 
-    pass
+    return output_data
 
 def update_book_by_parameters(book_id, section_id, tune_more_less):
     """do the following:
