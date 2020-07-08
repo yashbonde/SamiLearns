@@ -43,4 +43,9 @@ I am the outcome to be a system that is atleast 2x better at gathering informati
 - [ ] A Template system for different learing patterns
 - [X] A tuning system that is a new way to interact with the AI that gives you information, this is a new innovative solution that lays the foundation for our interactive AI system
 - [X] Throw links at the system and then it goes and reads those links, so need a general web-scraper engine. This needs to be ambivalent to the website because we may get any website' data (built partially, still not very smart but okay atleast helps in getting the strings)
-- [ ] A simple AI system (pref. non DL) that takes in the raw data and queries the existing APIs for more NLP information and makes a strucutred query-able information from it.
+- [X] A simple AI system (pref. non DL) that takes in the raw data and queries the existing APIs for more NLP information and makes a strucutred query-able information from it.
+
+
+## Sami's Suggestions
+
+What if I don't want to read any articles only see the images from the websites, can I have something like Google Tabs?

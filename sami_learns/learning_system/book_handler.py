@@ -6,19 +6,22 @@
 
 import regex as re
 import requests
-import spacy
+import numpy as np
 from urllib.parse import urlparse
 import logging
 
 # custom
-from .nlp_feature_extractor import make_scrapped_data, get_aggregate_data
-from .infer_sent_model import encoder
+# import nlp_feature_extractor as nlpfe
+from .nlp_feature_extractor import get_paragraphs, get_topics
 
 # constants to be initialised
 URLPAT = re.compile(r'^(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$')
-logging.info("Loading Spacy NLP model ... this might take some time!")
-NLP = spacy.load("en_core_web_md")
-INFERSENT_MODEL = encoder.get_model()
+# logging.info("Loading Spacy NLP model ... this might take some time!")
+# # NLP = spacy.load("en_core_web_md")
+# NLP = None
+# # INFERSENT_MODEL = encoder.get_model()
+# INFERSENT_MODEL = None
+
 
 def make_new_book(queries):
     """do the following:
@@ -43,24 +46,47 @@ def make_new_book(queries):
             qc = '{scheme}://{netloc}{path}'.format(
                 scheme = pr.scheme, netloc = pr.netloc, path = pr.path
             )
-            queries_cleaned.append(qc)
+            queries_cleaned.append({
+                "cleaned_string": qc,
+                "scheme": pr.scheme,
+                "netloc": pr.netloc,
+                "path": pr.path
+            })
         else:
             logging.info("Removing {} as this does not look like a valid url".format(q))
 
-    # now get html for each of the url
-    html_for_urls = []
-    for url in queries_cleaned:
-        logging.info("Requesting Link: {}".format(url))
-        out = requests.get(url).text
-        html_for_urls.append(out)
-    
-    # now perform nlp feature extraction
-    data_scrapped = make_scrapped_data(queries_cleaned, html_for_urls, NLP)
+    # get the cleaned parsed data and then aggregate topic wise
+    lines_topics = get_paragraphs(queries_cleaned = queries_cleaned, bigram_inclusion_thresh = 0.25)
+    topic_document_matrix, new_topics = get_topics(lines_topics)
 
-    # now send to NLP AI and perform aggregation
-    output_data = get_aggregate_data(data_scrapped, INFERSENT_MODEL)
+    # transform to final JSON object
+    topic_wise_documents = {}
+    for idx in range(len(topic_document_matrix)):
+        lt = lines_topics[idx]
+        sentence = lt["sentence"]
+        topic_assigned = "/".join(new_topics[np.argmax(topic_document_matrix[idx])])
+        topic_wise_documents.setdefault(topic_assigned, [])
+        topic_wise_documents[topic_assigned].append({
+            "sentence": sentence,
+            "raw": lt["raw"],
+            "master_link": {
+                "url": lt["url"]["cleaned_string"],
+                "link_name": lt["url"]["netloc"]
+            }
+        })
 
-    return output_data
+    document_sections = []
+    idx = 0
+    for t, tinfo in topic_wise_documents.items():
+        records = []
+        for item in tinfo:
+            records.append({
+                "htmltext": item["sentence"],
+                "master_link": item["master_link"]
+            })
+        document_sections.append({"id": idx, "name": t, "records": records[:4]})
+        idx += 1
+    return document_sections
 
 def update_book_by_parameters(book_id, section_id, tune_more_less):
     """do the following:

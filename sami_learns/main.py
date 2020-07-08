@@ -10,7 +10,6 @@ from fastapi.staticfiles import StaticFiles # static files on the system
 from fastapi.templating import Jinja2Templates # jinja templates
 from fastapi.responses import RedirectResponse
 
-
 # custom dependencies
 from learning_system import book_handler
 from models import fastapi_query_models
